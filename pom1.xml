@@ -121,4 +121,42 @@ prog-7
         name: htop
         state: present
 
+prog-8
+
+---
+- name: Deploy JAR
+  hosts: local
+  become: true
+
+  tasks:
+    - name: Copy JAR file
+      copy:
+        src: /mnt/c/ProgramData/Jenkins/.jenkins/workspace/your-job/target/your-app.jar
+        dest: /home/your-username/ansible-lab/app.jar
+        mode: '0755'
+
+    - name: Run JAR file
+      shell: nohup java -jar /home/your-username/ansible-lab/app.jar > /home/your-username/ansible-lab/app.log 2>&1 &
+
+ansible-playbook -i /home/youruser/ansible-lab/hosts /home/youruser/ansible-lab/deploy.yml
+
+<build>
+  <plugins>
+    <plugin>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <mainClass>com.multit.App</mainClass> <!-- Replace with your actual main class -->
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
+  </plugins>
+</build>
+
+
+
 
